@@ -1,0 +1,109 @@
+{
+	"flow_name" : "1",
+	"steps" : [
+		{
+			"class" : "weka.knowledgeflow.steps.ClassAssigner",
+			"properties" : {
+				"classColumn" : "class",
+				"name" : "ClassAssigner"
+			},
+			"connections" : {
+				"instance" : [
+					"NaiveBayesUpdateable"
+				]
+			},
+			"coordinates" : "203,37"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Classifier",
+			"properties" : {
+				"classifier" : {
+					"type" : "optionHandler",
+					"class" : "weka.classifiers.bayes.NaiveBayesUpdateable",
+					"options" : ""
+				},
+				"loadClassifierFileName" : "",
+				"name" : "NaiveBayesUpdateable",
+				"resetIncrementalClassifier" : false,
+				"updateIncrementalClassifier" : true
+			},
+			"connections" : {
+				"incrementalClassifier" : [
+					"IncrementalClassifierEvaluator",
+					"SerializedModelSaver"
+				]
+			},
+			"coordinates" : "352,36"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.Loader",
+			"properties" : {
+				"loader" : {
+					"type" : "loader",
+					"class" : "weka.core.converters.ArffLoader",
+					"filePath" : "",
+					"useRelativePath" : false
+				},
+				"name" : "ArffLoader"
+			},
+			"connections" : {
+				"instance" : [
+					"ClassAssigner"
+				]
+			},
+			"coordinates" : "38,39"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.IncrementalClassifierEvaluator",
+			"properties" : {
+				"chartingEvalWindowSize" : 0,
+				"name" : "IncrementalClassifierEvaluator",
+				"outputPerClassInfoRetrievalStats" : false,
+				"statusFrequency" : 2000
+			},
+			"connections" : {
+				"chart" : [
+					"StripChart"
+				],
+				"text" : [
+					"TextViewer"
+				]
+			},
+			"coordinates" : "507,41"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.TextViewer",
+			"properties" : {
+				"name" : "TextViewer"
+			},
+			"connections" : {
+			},
+			"coordinates" : "502,224"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.StripChart",
+			"properties" : {
+				"XLabelFreq" : 500,
+				"name" : "StripChart",
+				"refreshFreq" : 10000,
+				"refreshWidth" : 1
+			},
+			"connections" : {
+			},
+			"coordinates" : "630,144"
+		},
+		{
+			"class" : "weka.knowledgeflow.steps.SerializedModelSaver",
+			"properties" : {
+				"filenamePrefix" : "",
+				"includeRelationNameInFilename" : false,
+				"incrementalSaveSchedule" : 0,
+				"name" : "SerializedModelSaver",
+				"outputDirectory" : "C:/Program Files/Weka-3-8"
+			},
+			"connections" : {
+			},
+			"coordinates" : "349,213"
+		}
+	]
+}
